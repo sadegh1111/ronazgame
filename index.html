@@ -73,7 +73,35 @@
     }
 
     document.getElementById("score").innerText = score;
+<script>
 
+  let score = 0;
+
+  // 👇 اینجا بذار
+  async function saveScore(score, userId) {
+    await supabase.from("users").upsert({
+      id: userId,
+      score: score
+    });
+  }
+
+  async function loadScore(userId) {
+    let { data } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", userId)
+      .single();
+
+    return data?.score || 0;
+  }
+async function tap() {
+  score++;
+
+  document.getElementById("score").innerText = score;
+
+  await saveScore(score, tgUserId);
+}
+</script>
     function tap() {
       score += 1;
       document.getElementById("score").innerText = score;
