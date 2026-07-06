@@ -1,62 +1,84 @@
+
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ronaz Game</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ronaz Games</title>
 
-<style>
-body{
-background:#121212;
-color:white;
-font-family:Arial;
-text-align:center;
-margin-top:60px;
-}
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0f0f0f;
+      color: white;
+      text-align: center;
+    }
 
-#coin{
-font-size:70px;
-cursor:pointer;
-}
+    .container {
+      margin-top: 80px;
+    }
 
-#coins{
-font-size:35px;
-margin:20px;
-}
+    .score {
+      font-size: 40px;
+      margin: 20px 0;
+      color: gold;
+    }
 
-button{
-padding:12px 25px;
-font-size:18px;
-border:none;
-border-radius:10px;
-}
-</style>
+    button {
+      padding: 25px 40px;
+      font-size: 22px;
+      border: none;
+      border-radius: 20px;
+      background: gold;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
+    button:active {
+      transform: scale(0.95);
+    }
+
+    .small {
+      margin-top: 20px;
+      opacity: 0.7;
+    }
+  </style>
 </head>
 
 <body>
 
-<h1>🎮 Ronaz Game</h1>
+  <div class="container">
+    <h1>🔥 Ronaz Games</h1>
 
-<div id="coins">🪙 0</div>
+    <div class="score">
+      <span id="score">0</span> Coins
+    </div>
 
-<div id="coin">
-🪙
-</div>
+    <button onclick="tap()">TAP +1</button>
 
-<script>
+    <div class="small">
+      Your progress is saved automatically
+    </div>
+  </div>
 
-let coins=0;
+  <script>
+    let score = localStorage.getItem("score");
 
-document.getElementById("coin").onclick=function(){
+    if (!score) {
+      score = 0;
+    } else {
+      score = parseInt(score);
+    }
 
-coins++;
+    document.getElementById("score").innerText = score;
 
-document.getElementById("coins").innerHTML="🪙 "+coins;
-
-}
-
-</script>
+    function tap() {
+      score += 1;
+      document.getElementById("score").innerText = score;
+      localStorage.setItem("score", score);
+    }
+  </script>
 
 </body>
 </html>
