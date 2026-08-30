@@ -1,29 +1,36 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ronaz Games</title>
 
   <style>
     body {
       margin: 0;
-      font-family: Arial;
+      min-height: 100vh;
       background: #0f0f0f;
       color: white;
+      font-family: Arial, sans-serif;
       text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .container {
-      margin-top: 80px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    h1 {
+      margin-bottom: 30px;
     }
 
     .score {
       font-size: 40px;
-      margin: 20px 0;
       color: gold;
+      margin-bottom: 35px;
     }
 
     button {
@@ -32,8 +39,9 @@
       border: none;
       border-radius: 20px;
       background: gold;
-      cursor: pointer;
       font-weight: bold;
+      cursor: pointer;
+      touch-action: manipulation;
     }
 
     button:active {
@@ -45,6 +53,8 @@
       opacity: 0.7;
     }
   </style>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 
 <body>
@@ -64,62 +74,24 @@
   </div>
 
   <script>
-    let score = localStorage.getItem("score");
-
-    if (!score) {
-      score = 0;
-    } else {
-      score = parseInt(score);
-    }
+    let score = parseInt(localStorage.getItem("score") || "0");
 
     document.getElementById("score").innerText = score;
-<script>
 
-  let score = 0;
-
-  // 👇 اینجا بذار
-  async function saveScore(score, userId) {
-    await supabase.from("users").upsert({
-      id: userId,
-      score: score
-    });
-  }
-
-  async function loadScore(userId) {
-    let { data } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", userId)
-      .single();
-
-    return data?.score || 0;
-  }
-async function tap() {
-  score++;
-
-  document.getElementById("score").innerText = score;
-
-  await saveScore(score, tgUserId);
-}
-</script>
     function tap() {
-      score += 1;
+      score++;
+
       document.getElementById("score").innerText = score;
+
       localStorage.setItem("score", score);
     }
+
+    // Telegram Mini App
+    if (window.Telegram && Telegram.WebApp) {
+      Telegram.WebApp.ready();
+      Telegram.WebApp.expand();
+    }
   </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-<script>
-  const SUPABASE_URL = "PASTE_URL_HERE";
-  const SUPABASE_ANON_KEY = "PASTE_KEY_HERE";
-
-  const supabase = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
-
-  let tgUserId = "guest";
-</script>
 </body>
 </html>
